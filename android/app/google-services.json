@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "656334519434",
+    "project_id": "attendancemanangement",
+    "storage_bucket": "attendancemanangement.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:656334519434:android:673f43ab8b61a4d94b0173",
+        "android_client_info": {
+          "package_name": "com.marico.attendance"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmwDxQHPKexnv0grsEe71Xlxz5fQAMECo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
