@@ -97,7 +97,7 @@ class _FaceRecognitionDetectorState extends State<FaceRecognitionDetector> {
                 child: FaceDetectorView(
                     ruleset: [
                       //      Rulesets.blink,
-                      Rulesets.blink,
+                      Rulesets.smiling,
                     ],
                     dotRadius: 2.5,
                     totalDots: 70,

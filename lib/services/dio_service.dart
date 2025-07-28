@@ -12,7 +12,7 @@ class DioService {
   DioService._internal() {
     _dio = Dio(
       BaseOptions(
-        baseUrl: 'http://34.47.177.112:8002',
+        baseUrl: 'http://34.100.198.117:8002/',
         connectTimeout: const Duration(seconds: 15),
         receiveTimeout: const Duration(seconds: 15),
         // ⚠️  Do NOT hard-set contentType here; let each request decide
@@ -27,7 +27,7 @@ class DioService {
           if (opt.path == '/check_liveness') {
             opt.baseUrl = 'http://85.31.225.239:8080/';
           } else {
-            opt.baseUrl = 'http://34.47.177.112:8002/';
+            opt.baseUrl = 'http://34.100.198.117:8002/';
           }
           return h.next(opt);
         },
