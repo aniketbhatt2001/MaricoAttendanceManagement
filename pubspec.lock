@@ -158,8 +158,8 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: bdef990b184fe1ac3213d8161a714baebc4fca19
-      url: "https://github.com/aniketBhatt31975/facelivenessdetection"
+      resolved-ref: "104cdc68ab5737f38e4d5d01a285f810d3bf2472"
+      url: "https://github.com/aniketbhatt2001/facelivenessdetection"
     source: git
     version: "1.1.14"
   fake_async:

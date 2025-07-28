@@ -12,11 +12,12 @@ class DioService {
   DioService._internal() {
     _dio = Dio(
       BaseOptions(
-        baseUrl: 'http://34.100.198.117:8002/',
-        connectTimeout: const Duration(seconds: 15),
-        receiveTimeout: const Duration(seconds: 15),
-        // ⚠️  Do NOT hard-set contentType here; let each request decide
-      ),
+          baseUrl: 'http://34.100.191.117:8002/',
+          connectTimeout: const Duration(seconds: 10),
+          receiveTimeout: const Duration(seconds: 10),
+          sendTimeout: const Duration(seconds: 10)
+          // ⚠️  Do NOT hard-set contentType here; let each request decide
+          ),
     );
 
     // Interceptors (same as before)
@@ -27,7 +28,7 @@ class DioService {
           if (opt.path == '/check_liveness') {
             opt.baseUrl = 'http://85.31.225.239:8080/';
           } else {
-            opt.baseUrl = 'http://34.100.198.117:8002/';
+            opt.baseUrl = 'http://34.100.191.117:8002/';
           }
           return h.next(opt);
         },
@@ -57,35 +58,44 @@ class DioService {
     String path, {
     Map<String, dynamic>? queryParameters,
     Options? options,
-  }) =>
-      _dio.get(path, queryParameters: queryParameters, options: options);
+  }) {
+    try {
+      final response =
+          _dio.get(path, queryParameters: queryParameters, options: options);
+      return response;
+    } on DioException catch (e) {
+      log('DioException: ${e.message}');
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.sendTimeout) {
+        log('Response: ${e.response?.data}');
+        throw Exception('Network timeout. Please try again later.');
+      }
+      rethrow;
+    }
+  }
 
   Future<Response> post(
     String path, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
     Options? options,
-  }) =>
-      _dio.post(path,
+  }) async {
+    try {
+      final response = await _dio.post(path,
           data: data, queryParameters: queryParameters, options: options);
-
-  Future<Response> put(
-    String path, {
-    dynamic data,
-    Map<String, dynamic>? queryParameters,
-    Options? options,
-  }) =>
-      _dio.put(path,
-          data: data, queryParameters: queryParameters, options: options);
-
-  Future<Response> delete(
-    String path, {
-    dynamic data,
-    Map<String, dynamic>? queryParameters,
-    Options? options,
-  }) =>
-      _dio.delete(path,
-          data: data, queryParameters: queryParameters, options: options);
+      return response;
+    } on DioException catch (e) {
+      log('DioException: ${e.message}');
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.sendTimeout) {
+        log('Response: ${e.response?.data}');
+        throw Exception('Network timeout. Please try again later.');
+      }
+      rethrow;
+    }
+  }
 
   // ───────────────────────────────────────────
   // 🆕 MULTIPART / FILE-UPLOAD HELPER
@@ -143,7 +153,7 @@ class DioService {
         contentType: 'multipart/form-data',
       );
 
-      return _dio.post(
+      final res = await _dio.post(
         path,
         data: formData,
         queryParameters: queryParameters,
@@ -151,7 +161,15 @@ class DioService {
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
       );
-    } catch (e) {
+      return res;
+    } on DioException catch (e) {
+      log('DioException: ${e.message}');
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.sendTimeout) {
+        log('Response: ${e.response?.data}');
+        throw Exception('Network timeout. Please try again later.');
+      }
       rethrow;
     }
   }
